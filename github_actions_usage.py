@@ -5,6 +5,7 @@ import os
 from dotenv import load_dotenv
 import argparse
 import math
+import time
 
 # Load .env if present
 load_dotenv()
@@ -23,7 +24,7 @@ def get_repos():
     page = 1
     while True:
         url = f"https://api.github.com/user/repos?per_page=100&page={page}&type=owner"
-        resp = requests.get(url, headers=HEADERS)
+        resp = tracked_request(url, headers=HEADERS)
         data = resp.json()
         if not data:
             break
@@ -38,7 +39,7 @@ def get_usage(owner, repo):
     runs = []
     page = 1
     while True:
-        resp = requests.get(f"{url}&page={page}", headers=HEADERS)
+        resp = tracked_request(f"{url}&page={page}", headers=HEADERS)
         data = resp.json()
         if "workflow_runs" not in data or not data["workflow_runs"]:
             break
@@ -52,7 +53,7 @@ def get_jobs(owner, repo, run_id):
     page = 1
     while True:
         url = f"https://api.github.com/repos/{owner}/{repo}/actions/runs/{run_id}/jobs?per_page=100&page={page}"
-        resp = requests.get(url, headers=HEADERS)
+        resp = tracked_request(url, headers=HEADERS)
         data = resp.json()
         if "jobs" not in data or not data["jobs"]:
             break
@@ -63,12 +64,20 @@ def get_jobs(owner, repo, run_id):
 # Get timing for a workflow run
 def get_run_minutes(run):
     timing_url = run["url"] + "/timing"
-    timing = requests.get(timing_url, headers=HEADERS).json()
+    timing = tracked_request(timing_url, headers=HEADERS).json()
     ms = timing.get("run_duration_ms", 0)
     return ms / 60000
 
+api_call_count = 0
+
+def tracked_request(*args, **kwargs):
+    global api_call_count
+    api_call_count += 1
+    return requests.get(*args, **kwargs)
+
 # Main aggregation logic
 def main():
+    start_time = time.time()
     parser = argparse.ArgumentParser(description="GitHub Actions Usage Reporter")
     parser.add_argument("--by-repo", action="store_true", help="Break down usage by repository")
     parser.add_argument("--by-workflow", action="store_true", help="Break down usage by workflow within each repository")
@@ -138,6 +147,8 @@ def main():
             total_cost = minutes * cost_per_min
             table.append([runner_type, os_key, round(minutes, 2), f"${total_cost:.2f}"])
         print(tabulate(table, headers=["Runner Type", "OS", "Minutes", "Cost"]))
+    elapsed = time.time() - start_time
+    print(f"\nRun completed in {elapsed:.1f} seconds. API calls made: {api_call_count}")
 
 if __name__ == "__main__":
     main()
