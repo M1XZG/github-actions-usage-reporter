@@ -49,11 +49,13 @@ python github_actions_usage.py
 Optional command line options:
 - `--by-repo` — Break down usage by repository
 - `--by-workflow` — Break down usage by workflow within each repository
+- `--workers N` — Number of parallel workers for faster processing (default: 10)
 
 Examples:
 ```bash
 python github_actions_usage.py --by-repo
 python github_actions_usage.py --by-workflow
+python github_actions_usage.py --workers 20  # Use 20 parallel workers for faster execution
 ```
 
 ## Configuration
