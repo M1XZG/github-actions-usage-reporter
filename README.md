@@ -38,6 +38,16 @@ Run the script:
 python github_actions_usage.py
 ```
 
+Optional command line options:
+- `--by-repo` — Break down usage by repository
+- `--by-workflow` — Break down usage by workflow within each repository
+
+Examples:
+```bash
+python github_actions_usage.py --by-repo
+python github_actions_usage.py --by-workflow
+```
+
 ## Configuration
 
 Edit `config.yaml` to set your cost per minute for each runner type and OS. Example:
