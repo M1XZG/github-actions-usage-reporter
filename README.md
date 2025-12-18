@@ -1,5 +1,13 @@
 # GitHub Actions Usage Reporter
 
+**Why this exists:**
+
+This tool was created to help users estimate how much they might spend on GitHub Actions, especially in light of the proposed charges for self-hosted runners announced by GitHub in December 2025 ([announcement](https://github.blog/changelog/2025-12-16-coming-soon-simpler-pricing-and-a-better-experience-for-github-actions/)).
+
+After a vast public outcry, GitHub has since backed down from this plan (for now at least). See the community discussion and reversal here: [GitHub Community Discussion](https://github.com/orgs/community/discussions/182186).
+
+It remains useful for understanding your usage and potential costs should such changes be reconsidered in the future.
+
 This project provides a script to check all your owned GitHub repositories (excluding forks), aggregate GitHub Actions minutes used by runner type and OS, and calculate costs based on a configurable rate file. It outputs a summary table for easy analysis.
 
 ## Features
