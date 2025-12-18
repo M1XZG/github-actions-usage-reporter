@@ -1,0 +1,6 @@
+github_hosted:
+  linux: 0.008
+  windows: 0.016
+  macos: 0.08
+self_hosted:
+  all: 0.002

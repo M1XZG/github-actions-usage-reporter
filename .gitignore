@@ -1,0 +1,7 @@
+# Ignore Python cache, environment, and secrets
+__pycache__/
+.env
+*.pyc
+*.pyo
+*.pyd
+.env

@@ -1,0 +1,4 @@
+requests
+pyyaml
+tabulate
+python-dotenv
