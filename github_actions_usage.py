@@ -118,6 +118,7 @@ def main():
                 summary.setdefault(key, 0)
                 summary[key] += minutes
     print("\nSummary of GitHub Actions usage:")
+    print("Note: GitHub-hosted runner costs reflect actual pricing. Self-hosted runner costs are hypothetical (what you would pay if billed).\n")
     table = []
     if args.by_workflow:
         for (repo, workflow, runner_type, os_key), minutes in summary.items():
